@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Status Pembayaran | Mayo Digital Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <style>
+      body {
+        background: linear-gradient(120deg, #eafefb 0%, #e3f2fd 100%);
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        min-height: 100vh;
+      }
+      .card {
+        border: none;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 30px #0f69ee1c;
+      }
+      .icon-check,
+      .icon-fail,
+      .icon-warn {
+        font-size: 3.2rem;
+        margin-bottom: 18px;
+        animation: bounce-in 0.5s;
+        display: inline-block;
+        background: linear-gradient(100deg, #1de9b6 0%, #21c9a8 90%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .icon-check {
+        color: #1cc88a;
+      }
+      .icon-fail {
+        color: #f16a5c;
+        background: linear-gradient(90deg, #e3342f 0%, #f9a09a 100%);
+      }
+      .icon-warn {
+        color: #f7be3b;
+        background: linear-gradient(90deg, #ffb96c 0%, #ffc107 100%);
+      }
+      @keyframes bounce-in {
+        0% {
+          transform: scale(0.6);
+          opacity: 0;
+        }
+        70% {
+          transform: scale(1.13);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .invoice-table th {
+        background: #f7fefd;
+        width: 135px;
+        color: #169a7b;
+        font-weight: 600;
+        border-bottom: 1px solid #d3faf1;
+      }
+      .main-title {
+        font-weight: 900;
+        background: linear-gradient(90deg, #21c9a8 0%, #1de9b6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 2.1rem;
+        margin-bottom: 8px;
+      }
+      .subtitle {
+        color: #199978;
+        font-size: 1.13rem;
+        margin-bottom: 28px;
+      }
+
+      /* ---- NOTIF EMAIL ---- */
+      .email-sent-alert {
+        margin: 20px auto 24px auto;
+        border-radius: 17px;
+        background: linear-gradient(103deg, #e8fff3 56%, #e3f7ff 100%);
+        color: #16b088;
+        font-size: 1.12rem;
+        font-weight: 500;
+        padding: 1.05em 1.3em 1em 1.3em;
+        border-left: 7px solid #19d0fb;
+        border-top: 1px solid #aaf5f0;
+        box-shadow: 0 2px 16px #a7f5ee1c;
+        display: flex;
+        align-items: flex-start;
+        gap: 18px;
+        justify-content: flex-start;
+        animation: fadein 1.1s;
+        position: relative;
+        overflow: hidden;
+      }
+      .email-sent-alert .bi-envelope-paper-fill {
+        font-size: 2.15em;
+        margin-right: 6px;
+        margin-top: -2px;
+        color: #19c1c9;
+        filter: drop-shadow(0 2px 12px #19c1c955);
+      }
+      .email-sent-alert .mail-highlight {
+        color: #0078d9;
+        font-weight: bold;
+        text-decoration: underline dotted #19c1c955 1.5px;
+      }
+      .email-sent-alert .mini {
+        font-size: 0.97em;
+        color: #0c8d6e;
+        display: block;
+        margin-top: 2px;
+        margin-left: 35px;
+        font-weight: 400;
+      }
+      .email-sent-alert .check-badge {
+        background: #19e5b8;
+        color: #fff;
+        border-radius: 50%;
+        font-size: 1.2em;
+        width: 1.7em;
+        height: 1.7em;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 9px;
+        box-shadow: 0 2px 7px #21c9a825;
+      }
+      @keyframes fadein {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 580px) {
+        .main-title {
+          font-size: 1.25rem;
+        }
+        .card {
+          border-radius: 1em;
+        }
+        .icon-check,
+        .icon-fail,
+        .icon-warn {
+          font-size: 2.2rem;
+        }
+        .invoice-table th {
+          width: 90px;
+          font-size: 0.97em;
+        }
+        .email-sent-alert {
+          font-size: 0.97rem;
+          padding: 0.75em 0.8em;
+          gap: 11px;
+        }
+        .email-sent-alert .bi-envelope-paper-fill {
+          font-size: 1.4em;
+        }
+        .email-sent-alert .mini {
+          margin-left: 19px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-10">
+          <div class="card shadow-lg">
+            <div class="card-body text-center">
+              <div id="iconStatus" class="mb-2"></div>
+              <div class="main-title" id="mainTitle">Pembayaran</div>
+              <div class="subtitle" id="subtitle">
+                Menunggu status pembayaran...
+              </div>
+              <div id="alertEmailBox"></div>
+              <div id="invoiceBox"></div>
+              <a href="/" class="btn btn-outline-primary mt-4">
+                <i class="bi bi-arrow-left"></i> Kembali ke Beranda
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const ref =
+        params.get("reference") ||
+        params.get("ref") ||
+        params.get("tripay_reference");
+      const iconStatus = document.getElementById("iconStatus");
+      const mainTitle = document.getElementById("mainTitle");
+      const subtitle = document.getElementById("subtitle");
+      const alertEmailBox = document.getElementById("alertEmailBox");
+
+      function showStatusIcon(type) {
+        if (type === "success") {
+          iconStatus.innerHTML =
+            '<span class="icon-check"><i class="bi bi-patch-check-fill"></i></span>';
+          mainTitle.textContent = "Pembayaran Berhasil";
+          subtitle.textContent =
+            "Terima kasih, pembayaran Anda sudah kami terima.";
+        } else if (type === "failed") {
+          iconStatus.innerHTML =
+            '<span class="icon-fail"><i class="bi bi-x-octagon-fill"></i></span>';
+          mainTitle.textContent = "Pembayaran Gagal";
+          subtitle.textContent = "Maaf, pembayaran Anda gagal atau dibatalkan.";
+        } else if (type === "expired") {
+          iconStatus.innerHTML =
+            '<span class="icon-fail"><i class="bi bi-x-octagon-fill"></i></span>';
+          mainTitle.textContent = "Pembayaran Expired";
+          subtitle.textContent =
+            "Maaf, invoice telah expired / tidak dibayar tepat waktu.";
+        } else {
+          iconStatus.innerHTML =
+            '<span class="icon-warn"><i class="bi bi-clock-history"></i></span>';
+          mainTitle.textContent = "Menunggu Pembayaran";
+          subtitle.textContent =
+            "Silakan selesaikan pembayaran untuk mengaktifkan layanan.";
+        }
+      }
+
+      function renderInvoice(inv, orderInfo) {
+        let paidText =
+          inv.status === "PAID" || inv.status === "SETTLED"
+            ? '<span class="badge rounded-pill text-bg-success px-3 py-2"><i class="bi bi-check-circle"></i> Lunas</span>'
+            : inv.status === "EXPIRED"
+              ? '<span class="badge rounded-pill text-bg-danger px-3 py-2"><i class="bi bi-x-octagon"></i> Expired</span>'
+              : inv.status === "FAILED" ||
+                  inv.status === "REFUND" ||
+                  inv.status === "FAILED_REFUND"
+                ? '<span class="badge rounded-pill text-bg-danger px-3 py-2"><i class="bi bi-x-circle"></i> Gagal</span>'
+                : '<span class="badge rounded-pill text-bg-warning px-3 py-2"><i class="bi bi-clock-history"></i> ' +
+                  inv.status +
+                  "</span>";
+
+        document.getElementById("invoiceBox").innerHTML = `
+        <div class="mb-3">
+          <h5>Invoice <span class="text-primary">${inv.reference}</span></h5>
+          ${paidText}
+        </div>
+        <div class="table-responsive">
+        <table class="table table-bordered align-middle invoice-table">
+          <tr><th>Status</th><td>${inv.status}</td></tr>
+          <tr><th>Nama</th><td>${inv.customer_name || (orderInfo && orderInfo.name) || "-"}</td></tr>
+          <tr><th>Email</th><td>${inv.customer_email || (orderInfo && orderInfo.email) || "-"}</td></tr>
+          <tr><th>Metode</th><td>${inv.payment_method || "-"} <small>${
+            inv.payment_name ? "(" + inv.payment_name + ")" : ""
+          }</small></td></tr>
+          <tr><th>Nominal</th><td><span class="fw-bold">Rp ${
+            inv.amount ? inv.amount.toLocaleString() : "-"
+          }</span></td></tr>
+          <tr><th>Waktu Bayar</th><td>${
+            inv.paid_at
+              ? new Date(inv.paid_at * 1000).toLocaleString("id-ID")
+              : "-"
+          }</td></tr>
+          <tr><th>Invoice Tripay</th><td>
+            <a href="https://tripay.co.id/checkout/${
+              inv.reference
+            }" class="btn btn-sm btn-outline-success" target="_blank">
+              <i class="bi bi-receipt"></i> Lihat Invoice Tripay
+            </a>
+          </td></tr>
+        </table>
+        </div>
+        <div class="text-center mt-3">
+          <a href="https://tripay.co.id/checkout/${
+            inv.reference
+          }" target="_blank" class="btn btn-success">
+            <i class="bi bi-printer"></i> Cetak / Simpan Invoice
+          </a>
+        </div>
+        `;
+      }
+
+      // Cek detail invoice ke BACKEND, lalu cek status email pengiriman akun (akun_sent)
+      async function fetchStatus() {
+        if (!ref) {
+          showStatusIcon("failed");
+          document.getElementById("invoiceBox").innerHTML =
+            '<div class="alert alert-danger mt-3">Tidak ada reference pembayaran.</div>';
+          return;
+        }
+        document.getElementById("invoiceBox").innerHTML =
+          '<div class="text-center my-4"><div class="spinner-border text-primary" role="status"></div><div>Memuat detail invoice...</div></div>';
+        alertEmailBox.innerHTML = "";
+        try {
+          // 1. Ambil detail invoice dari backend (status pembayaran)
+          const res = await fetch(
+            "/api/invoice/detail/" + encodeURIComponent(ref)
+          );
+          const data = await res.json();
+          if (data.status !== "ok" || !data.data) {
+            showStatusIcon("failed");
+            document.getElementById("invoiceBox").innerHTML =
+              '<div class="alert alert-danger mt-3">' +
+              (data.message || "Invoice tidak ditemukan!") +
+              "</div>";
+            subtitle.textContent =
+              "Terjadi masalah, pembayaran Anda belum terdeteksi di sistem kami.";
+            return;
+          }
+          const inv = data.data;
+
+          // 2. Ambil status pengiriman akun/email (optional, kustom API)
+          let orderInfo = null;
+          try {
+            const r = await fetch(
+              "/api/orders?single=" + encodeURIComponent(ref)
+            );
+            const arr = await r.json();
+            if (arr && arr.length) orderInfo = arr[0];
+          } catch {}
+
+          // 3. Tampilkan status pembayaran & email
+          if (inv.status === "PAID" || inv.status === "SETTLED") {
+            showStatusIcon("success");
+
+            if (orderInfo && orderInfo.akun_sent === true) {
+              alertEmailBox.innerHTML = `
+                <div class="email-sent-alert">
+                  <i class="bi bi-envelope-paper-fill"></i>
+                  <div>
+                    Akun berhasil dikirim ke email <span class="mail-highlight">${orderInfo.email}</span>
+                    <span class="check-badge"><i class="bi bi-check-lg"></i></span>
+                    <span class="mini">Cek juga folder spam/promosi jika belum masuk.</span>
+                  </div>
+                </div>
+              `;
+            } else if (orderInfo && orderInfo.akun_sent === "FAILED") {
+              alertEmailBox.innerHTML = `
+                <div class="email-sent-alert" style="color:#d32727;background:#fff8f7; border-left-color:#ffabaf;">
+                  <i class="bi bi-exclamation-triangle"></i>
+                  <div>
+                    Akun <b>gagal dikirim</b> ke email <span class="mail-highlight">${orderInfo.email}</span>
+                    <span class="mini" style="color:#b05a5a;">Stok habis/gagal kirim. Silakan hubungi admin!</span>
+                  </div>
+                </div>
+              `;
+            } else {
+              alertEmailBox.innerHTML = `
+                <div class="email-sent-alert" style="color:#999; background:#fcfdff;">
+                  <i class="bi bi-clock-history"></i>
+                  <div>
+                    Pembayaran berhasil, akun akan segera dikirim ke email Anda (maksimal 1 menit).
+                    <span class="mini" style="color:#9ca2b0;">Mohon tunggu, sistem sedang memproses pengiriman.</span>
+                  </div>
+                </div>
+              `;
+              setTimeout(fetchStatus, 4000); // auto-refresh setiap 4s sampai akun terkirim
+            }
+          } else if (
+            inv.status === "FAILED" ||
+            inv.status === "REFUND" ||
+            inv.status === "FAILED_REFUND"
+          ) {
+            showStatusIcon("failed");
+          } else if (inv.status === "EXPIRED") {
+            showStatusIcon("expired");
+          } else {
+            showStatusIcon("pending");
+            setTimeout(fetchStatus, 8000);
+          }
+          renderInvoice(inv, orderInfo);
+        } catch (err) {
+          showStatusIcon("failed");
+          document.getElementById("invoiceBox").innerHTML =
+            '<div class="alert alert-danger mt-3">Gagal menghubungi server. Silakan refresh halaman ini.</div>';
+        }
+      }
+      fetchStatus();
+    </script>
+  </body>
+</html>

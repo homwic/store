@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mayo Digital Store by Lutify Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"
+    />
+    <style>
+      body {
+        background: linear-gradient(120deg, #f5faf8 0%, #e6fcfa 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .navbar-brand img {
+        height: 34px;
+        margin-right: 10px;
+        border-radius: 7px;
+        background: #fff;
+        box-shadow: 0 2px 12px #21c9a815;
+      }
+      .navbar {
+        background: linear-gradient(90deg, #21c9a8 70%, #16c99a 100%);
+        box-shadow: 0 3px 16px #21c9a815;
+      }
+      .navbar .nav-link {
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.07em;
+        letter-spacing: 0.4px;
+        transition: color 0.13s;
+      }
+      .navbar .nav-link:hover,
+      .navbar .nav-link.active {
+        color: #fffdaf;
+      }
+      .navbar .navbar-brand,
+      .navbar .navbar-brand *,
+      .navbar span.navbar-brand {
+        color: #fff !important;
+        text-shadow: 0 2px 10px #21c9a885;
+      }
+      .store-header {
+        text-align: center;
+        margin-bottom: 2.2rem;
+        margin-top: 1.7rem;
+      }
+      .store-header h1 {
+        font-weight: 900;
+        letter-spacing: 2px;
+        color: #fff;
+        text-shadow:
+          0 4px 30px #21c9a870,
+          0 2px 12px #21c9a8c9;
+        font-size: 2.5rem;
+        transition: color 0.2s;
+      }
+      .store-header .sub {
+        color: #00b686;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+        font-size: 1.08rem;
+      }
+      .product-card {
+        box-shadow: 0 6px 20px rgba(33, 201, 168, 0.09);
+        border: 2px solid #f6faf8;
+        border-radius: 22px;
+        background: linear-gradient(120deg, #fff 85%, #fafff9 100%);
+        transition:
+          transform 0.13s,
+          box-shadow 0.13s;
+        overflow: hidden;
+        position: relative;
+      }
+      .product-card:hover {
+        transform: translateY(-6px) scale(1.035);
+        box-shadow: 0 16px 40px #21c9a830;
+        border-color: #1de9b6;
+      }
+      .product-card img {
+        height: 150px;
+        object-fit: contain;
+        background: #f0f8ff;
+        border-radius: 22px 22px 0 0;
+        padding: 12px;
+        transition: filter 0.2s;
+        width: 100%;
+      }
+      .product-card:hover img {
+        filter: brightness(0.92) saturate(1.06);
+      }
+      .product-title {
+        color: #239b88;
+        font-weight: 700;
+        margin-bottom: 3px;
+      }
+      .price-badge {
+        background: #fff7df;
+        color: #ffae2b;
+        font-size: 1.07rem;
+        font-weight: 600;
+        padding: 0.44rem 1.1rem;
+        border-radius: 999px;
+        box-shadow: 0 2px 6px #ffb31b11;
+        margin-bottom: 6px;
+        display: inline-block;
+      }
+      .btn-buy {
+        background: linear-gradient(90deg, #21c9a8 60%, #e9ed52 100%);
+        color: #232;
+        font-weight: 700;
+        border: none;
+        box-shadow: 0 2px 12px #21c9a815;
+        transition:
+          background 0.19s,
+          color 0.19s;
+      }
+      .btn-buy:disabled,
+      .btn-buy:active {
+        background: #b7ffed !important;
+        color: #aaa !important;
+        cursor: not-allowed;
+      }
+      .toast-custom {
+        background: #e8fcee;
+        border-left: 6px solid #16c99a;
+        color: #159e7a;
+        font-weight: 600;
+        box-shadow: 0 2px 20px #21c9a81c;
+        position: fixed;
+        bottom: 26px;
+        right: 28px;
+        min-width: 260px;
+        z-index: 1055;
+        border-radius: 10px;
+        padding: 1.05em 1.45em;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        animation: fadein 0.9s;
+      }
+      @keyframes fadein {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      /* === FOOTER HORIZONTAL === */
+      footer {
+        background: linear-gradient(90deg, #21c9a8 60%, #15b79c 100%);
+        color: #fff;
+        padding: 2rem 0 1rem 0;
+        margin-top: auto;
+        box-shadow: 0 -2px 20px #21c9a82a;
+      }
+      .footer-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 18px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2em;
+      }
+      .footer-col {
+        flex: 1 1 210px;
+        min-width: 170px;
+        margin-bottom: 1.5em;
+      }
+      .footer-col .footer-logo {
+        width: 44px;
+        border-radius: 9px;
+        background: #fff;
+        box-shadow: 0 2px 12px #fff9;
+        margin-bottom: 0.65em;
+      }
+      .footer-col h4 {
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+      }
+      .footer-contact-list,
+      .footer-social-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .footer-contact-list li,
+      .footer-social-list li {
+        margin-bottom: 0.5em;
+        font-size: 1.08em;
+      }
+      .footer-contact-list a,
+      .footer-social-list a {
+        color: #fffbe7;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.16s;
+      }
+      .footer-contact-list a:hover,
+      .footer-social-list a:hover {
+        color: #fff9a4;
+      }
+      .footer-social-list {
+        display: flex;
+        gap: 1.1em;
+      }
+      .footer-help {
+        margin-top: 0.3em;
+        font-size: 1em;
+        color: #fff;
+        background: #1ccda0;
+        padding: 0.9em 1.2em 0.7em 1.2em;
+        border-radius: 17px;
+        box-shadow: 0 2px 18px #36f6d41a;
+        display: inline-block;
+      }
+      .footer-help .btn {
+        background: #fff;
+        color: #21c9a8;
+        border: none;
+        border-radius: 14px;
+        font-weight: 700;
+        margin-top: 0.5em;
+        padding: 4px 19px;
+      }
+      .footer-help .btn:hover {
+        background: #16c99a;
+        color: #fff;
+      }
+      .footer-mini {
+        text-align: center;
+        color: #d6fff3;
+        font-size: 0.98em;
+        margin-top: 1.6em;
+      }
+      @media (max-width: 900px) {
+        .footer-container {
+          flex-direction: column;
+          align-items: center;
+          gap: 1.3em;
+        }
+        .footer-col {
+          width: 100%;
+          max-width: 330px;
+          text-align: center;
+        }
+        .footer-social-list {
+          justify-content: center;
+        }
+      }
+      @media (max-width: 767px) {
+        .product-card img {
+          height: 90px;
+        }
+        .store-header {
+          margin-bottom: 1.1rem;
+        }
+        .store-header h1 {
+          font-size: 1.5rem;
+        }
+      }
+      /* ==== WHATSAPP FLOATING BUTTON ==== */
+      .wa-float {
+        position: fixed;
+        z-index: 9988;
+        right: 18px;
+        bottom: 18px;
+        background: linear-gradient(135deg, #21c9a8 65%, #1abc85 100%);
+        border-radius: 50%;
+        box-shadow: 0 4px 20px #21c9a844;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: box-shadow 0.18s;
+        cursor: pointer;
+      }
+      .wa-float:hover {
+        box-shadow: 0 6px 28px #15b79c77;
+        background: linear-gradient(135deg, #20e39c 65%, #13c88f 100%);
+      }
+      .wa-float i {
+        color: #fff;
+        font-size: 2.1em;
+      }
+      @media (max-width: 700px) {
+        .wa-float {
+          right: 11px;
+          bottom: 11px;
+          width: 48px;
+          height: 48px;
+        }
+        .wa-float i {
+          font-size: 1.5em;
+        }
+      }
+
+      /* ---- Animasi badge status dan progress bar di cek pesanan ---- */
+      .status-badge {
+        display: inline-block;
+        padding: 0.42em 1.08em;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 1.07em;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 14px #21c9a81a;
+        animation: pop-in 0.8s cubic-bezier(0.37, 1.32, 0.62, 0.99);
+      }
+      @keyframes pop-in {
+        0% {
+          transform: scale(0.7);
+          opacity: 0;
+        }
+        70% {
+          transform: scale(1.08);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .status-badge.paid {
+        background: #1de9b6;
+        color: #fff;
+      }
+      .status-badge.expired,
+      .status-badge.failed {
+        background: #e84118;
+        color: #fff;
+      }
+      .status-badge.pending {
+        background: #ffe66a;
+        color: #ad8d00;
+      }
+      .status-badge.sent {
+        background: #26cf77;
+        color: #fff;
+      }
+      .status-badge.not-sent {
+        background: #b2bec3;
+        color: #666;
+      }
+      .progress-cek {
+        background: linear-gradient(90deg, #21c9a8 30%, #ffe66a 100%);
+        border-radius: 8px;
+        height: 8px;
+        width: 100%;
+        margin: 12px 0 18px 0;
+        overflow: hidden;
+        box-shadow: 0 1px 7px #21c9a834;
+        position: relative;
+      }
+      .progress-cek-bar {
+        height: 100%;
+        width: 60%;
+        background: repeating-linear-gradient(
+          120deg,
+          #fff4 0 8px,
+          #fff0 10px 20px
+        );
+        animation: progress-cek-move 1.3s linear infinite;
+      }
+      @keyframes progress-cek-move {
+        from {
+          margin-left: -60%;
+        }
+        to {
+          margin-left: 110%;
+        }
+      }
+      .wa-float,
+      .wa-float:focus,
+      .wa-float:active,
+      .wa-float:visited {
+        outline: none !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+      }
+
+      .wa-float:focus-visible {
+        outline: none !important;
+      }
+
+      .wa-float i {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-md sticky-top">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <img src="image/logo.png" alt="Logo" />
+          <span
+            class="ms-1 d-none d-sm-inline"
+            style="font-weight: 900; letter-spacing: 1.2px"
+            >Mayo Digital Store</span
+          >
+        </a>
+        <button
+          class="navbar-toggler bg-white"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#cekPesananModal"
+              >
+                <i class="fa fa-search me-1"></i> Cek Pesanan
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HEADER & PRODUCTS -->
+    <div class="container py-4">
+      <div class="store-header">
+        <img
+          src="image/logo.png"
+          alt="Logo"
+          style="height: 54px; margin-bottom: 0.5em"
+        />
+        <h1>Mayo Digital Store</h1>
+        <div class="sub">by Lutify Store</div>
+        <p class="lead text-secondary mb-2">
+          Menyediakan Akun <b>Netflix</b>, <b>Spotify</b>, <b>Disney+</b> &
+          produk digital, dengan harga sangat terjangkau
+        </p>
+        <!-- <span
+          class="badge rounded-pill bg-warning-subtle text-warning-emphasis mb-3 px-4 py-2 fs-6"
+          style="font-weight: 500"
+        >
+          Promo bulan ini: Cashback saldo s/d 10%
+        </span> -->
+      </div>
+      <div id="products" class="row g-4"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-col" style="text-align: center">
+          <img src="image/logo.png" alt="Logo" class="footer-logo" />
+          <div style="margin-top: 0.4em; font-weight: 700">
+            Mayo Digital Store
+          </div>
+          <div style="font-size: 0.98em; color: #dcfff1">by Lutify Store</div>
+        </div>
+        <div class="footer-col">
+          <h4>Kontak Kami</h4>
+          <ul class="footer-contact-list">
+            <li>
+              <a href="mailto:mayodigitalstore@gmail.com">
+                <i class="fa fa-envelope me-1"></i> admin@mayoenak.site
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/6289513980691" target="_blank">
+                <i class="fab fa-whatsapp me-1"></i> 0895-1398-0691
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Sosial & Bantuan</h4>
+          <ul class="footer-social-list">
+            <li>
+              <a
+                href="https://instagram.com/lutify.store"
+                target="_blank"
+                title="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+            </li>
+            <li>
+              <a
+                href="https://t.me/lutify_store"
+                target="_blank"
+                title="Telegram"
+                ><i class="fab fa-telegram"></i
+              ></a>
+            </li>
+          </ul>
+          <div class="footer-help mt-2">
+            <div><i class="fa fa-life-ring me-2"></i>Butuh bantuan?</div>
+            <a
+              href="https://wa.me/6289513980691?text=Halo%20admin%20Mayo%20Digital%20Store,%20saya%20ada%20kendala%20pada%20akun%20yang%20saya%20beli"
+              class="btn btn-sm mt-2"
+              target="_blank"
+            >
+              <i class="fab fa-whatsapp"></i> Lapor ke Admin
+            </a>
+            <div class="small text-white-50 mt-1">
+              Respon cepat 09.00–22.00 WIB
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-mini">
+        &copy; 2025 Mayo Digital Store by Lutify Store. All rights reserved.
+      </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a
+      href="https://wa.me/6289513980691?text=Halo%20admin%20Mayo%20Digital%20Store%2C%20saya%20ingin%20konsultasi"
+      target="_blank"
+      class="wa-float"
+      title="Chat Admin via WhatsApp"
+    >
+      <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Toast Notification -->
+    <div id="toastNotify" class="toast-custom" style="display: none">
+      <i class="fa fa-info-circle"></i> <span id="toastMsg"></span>
+      <button
+        onclick="document.getElementById('toastNotify').style.display='none'"
+        style="
+          margin-left: auto;
+          border: none;
+          background: transparent;
+          font-size: 1.3em;
+          color: #199978;
+        "
+      >
+        &times;
+      </button>
+    </div>
+
+    <!-- MODAL CEK PESANAN -->
+    <div
+      class="modal fade"
+      id="cekPesananModal"
+      tabindex="-1"
+      aria-labelledby="cekPesananLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow border-0">
+          <div class="modal-header bg-info-subtle rounded-top-4">
+            <h5 class="modal-title fw-bold" id="cekPesananLabel">
+              <i class="fa fa-receipt me-2 text-info"></i>
+              Cek Status Pesanan
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="cekPesananForm" autocomplete="off">
+              <label class="form-label" for="cekRef">
+                Masukkan Reference (kode invoice Tripay):
+              </label>
+              <input
+                type="text"
+                class="form-control mb-3"
+                id="cekRef"
+                placeholder="Contoh: TRX1719328399xxx"
+                required
+                autocomplete="off"
+              />
+              <button type="submit" class="btn btn-success w-100 mb-2">
+                <i class="fa fa-search me-1"></i> Cek Status
+              </button>
+            </form>
+            <div id="cekPesananHasil" class="mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Beli (QRIS Only) -->
+    <div
+      class="modal fade"
+      id="beliModal"
+      tabindex="-1"
+      aria-labelledby="beliModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <form
+          class="modal-content shadow-lg border-0"
+          id="beliForm"
+          autocomplete="off"
+        >
+          <div class="modal-header bg-info-subtle">
+            <h5 class="modal-title fw-bold" id="beliModalLabel">
+              <i class="fa fa-bag-shopping me-2 text-info"></i>Form Pembelian
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert-email mb-3">
+              <i class="fa fa-envelope-circle-check fa-lg"></i>
+              <span
+                ><b>Pastikan alamat email BENAR!</b> Akun akan dikirim ke email
+                ini. Jika email salah, akun tidak bisa dikirim ulang.</span
+              >
+            </div>
+            <div class="mb-2">
+              <div><b>Produk:</b> <span id="beliProdukName"></span></div>
+              <div class="text-muted"><small id="beliProdukDesc"></small></div>
+            </div>
+            <input type="hidden" name="produkId" id="beliProdukId" />
+            <div class="mb-3 input-group-lg">
+              <label class="form-label" for="beliNama"
+                ><i class="fa fa-user me-2 text-secondary"></i>Nama
+                Lengkap</label
+              >
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                <input
+                  type="text"
+                  class="form-control rounded-3"
+                  id="beliNama"
+                  name="nama"
+                  placeholder="Nama lengkap"
+                  required
+                />
+              </div>
+            </div>
+            <div class="mb-3 input-group-lg">
+              <label class="form-label" for="beliEmail"
+                ><i class="fa fa-envelope me-2 text-secondary"></i>Email
+                <span class="text-danger">*</span></label
+              >
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fa fa-envelope"></i
+                ></span>
+                <input
+                  type="email"
+                  class="form-control rounded-3"
+                  id="beliEmail"
+                  name="email"
+                  placeholder="Alamat email aktif"
+                  required
+                  autocomplete="off"
+                />
+              </div>
+              <div class="invalid-feedback" id="beliEmailInvalid">
+                Masukkan email valid (akun akan dikirim via email).
+              </div>
+              <div class="text-warning small mt-1">
+                <i class="fa fa-triangle-exclamation me-1"></i> Email harus
+                aktif & benar.
+              </div>
+            </div>
+            <div class="mb-3 input-group-lg">
+              <label class="form-label" for="beliWa"
+                ><i class="fab fa-whatsapp me-2 text-success"></i>No.
+                WhatsApp</label
+              >
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fab fa-whatsapp"></i
+                ></span>
+                <input
+                  type="tel"
+                  class="form-control rounded-3"
+                  id="beliWa"
+                  name="wa"
+                  placeholder="08xxxxxxxxxx"
+                  pattern="\d{9,15}"
+                  required
+                />
+              </div>
+            </div>
+            <div class="mb-3 input-group-lg">
+              <label class="form-label"
+                ><i class="fa fa-qrcode me-2 text-secondary"></i>Pembayaran
+                Hanya Support QRIS</label
+              >
+              <div class="form-control-plaintext ps-1">
+                <span class="badge bg-success text-light fs-6 py-2 px-3"
+                  ><i class="fa fa-qrcode me-1"></i> QRIS</span
+                >
+              </div>
+              <input
+                type="hidden"
+                id="paymentMethod"
+                name="payment_method"
+                value="QRIS"
+              />
+              <div class="text-muted small mt-1">
+                Bayar dengan <b>QRIS</b> semua e-wallet & mobile banking!
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer flex-column gap-1">
+            <button
+              type="submit"
+              id="beliSubmitBtn"
+              class="btn btn-success w-100 rounded-4 d-flex align-items-center justify-content-center gap-2"
+              style="font-size: 1.07rem"
+            >
+              <span id="beliBtnText">Kirim Pesanan</span>
+              <span
+                id="beliSpinner"
+                class="spinner-border spinner-border-sm d-none"
+              ></span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary w-100 rounded-4"
+              data-bs-dismiss="modal"
+            >
+              Batal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let productsList = [];
+      fetch("/api/products")
+        .then((res) => res.json())
+        .then((products) => {
+          productsList = products;
+          let html = "";
+          products.forEach((prod, idx) => {
+            const isHabis = !prod.stock || !prod.stock.length;
+            html += `
+        <div class="col-md-4 col-12">
+          <div class="card product-card h-100">
+            <img src="${prod.image}" class="card-img-top" alt="${prod.name}">
+            <div class="card-body pb-3">
+              <h5 class="product-title">${prod.name}</h5>
+              <span class="price-badge">Rp ${prod.price.toLocaleString()}</span>
+              <p class="text-muted small mb-3 mt-1">${prod.desc}</p>
+              <div class="d-grid gap-2">
+                <button class="btn btn-buy w-100 rounded-5 btn-modal-beli mb-1" data-idx="${idx}" ${isHabis ? "disabled" : ""}>
+                  ${isHabis ? "<i class='fa fa-ban me-1'></i> Habis" : "<i class='fa fa-shopping-cart me-1'></i> Beli"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        `;
+          });
+          document.getElementById("products").innerHTML = html;
+
+          document.querySelectorAll(".btn-modal-beli").forEach((btn) => {
+            btn.onclick = function () {
+              if (btn.disabled) return;
+              const p = productsList[btn.dataset.idx];
+              document.getElementById("beliProdukId").value = p.id || "";
+              document.getElementById("beliProdukName").textContent =
+                p.name || "";
+              document.getElementById("beliProdukDesc").textContent =
+                p.desc || "";
+              document.getElementById("beliForm").reset();
+              document.getElementById("beliEmailInvalid").style.display =
+                "none";
+              document
+                .getElementById("beliEmail")
+                .classList.remove("is-invalid");
+              document.getElementById("beliBtnText").style.display = "";
+              document.getElementById("beliSpinner").classList.add("d-none");
+              const modal = new bootstrap.Modal(
+                document.getElementById("beliModal")
+              );
+              modal.show();
+            };
+          });
+        });
+
+      function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+      }
+
+      // Toast/Notification function
+      function showToast(msg) {
+        const t = document.getElementById("toastNotify");
+        document.getElementById("toastMsg").innerHTML = msg;
+        t.style.display = "";
+        setTimeout(() => {
+          t.style.display = "none";
+        }, 4500);
+      }
+
+      // === CEK PESANAN dengan status email dan animasi ===
+      document.getElementById("cekPesananForm").onsubmit = async function (e) {
+        e.preventDefault();
+        const ref = document.getElementById("cekRef").value.trim();
+        if (!ref) return;
+        const hasil = document.getElementById("cekPesananHasil");
+        hasil.innerHTML = `
+        <div class="text-center my-4">
+          <div style="max-width:240px;margin:auto">
+            <div class="progress-cek"><div class="progress-cek-bar"></div></div>
+          </div>
+          <div style="color:#21c9a8"><b>Memeriksa status pesanan...</b></div>
+        </div>`;
+        try {
+          // 1. Ambil status pembayaran dari Tripay
+          const res = await fetch(
+            "/api/invoice/detail/" + encodeURIComponent(ref)
+          );
+          const data = await res.json();
+          if (data.status !== "ok" || !data.data) {
+            hasil.innerHTML = `<div class="alert alert-danger mt-3"><i class="fa fa-times-circle me-1"></i> Reference tidak ditemukan!</div>`;
+            return;
+          }
+          const inv = data.data;
+
+          // 2. Ambil status pengiriman akun/email dari /api/orders?single=...
+          let akunInfo = null;
+          try {
+            const r = await fetch(
+              "/api/orders?single=" + encodeURIComponent(ref)
+            );
+            const arr = await r.json();
+            if (arr && arr.length) akunInfo = arr[0];
+          } catch {}
+
+          // 3. Build status badge dan animasi
+          let badge = "";
+          if (inv.status === "PAID" || inv.status === "SETTLED") {
+            badge = `<span class="status-badge paid"><i class="fa fa-check-circle me-1"></i>Lunas</span>`;
+          } else if (inv.status === "EXPIRED") {
+            badge = `<span class="status-badge expired"><i class="fa fa-times-circle me-1"></i>Expired</span>`;
+          } else if (
+            inv.status === "FAILED" ||
+            inv.status === "REFUND" ||
+            inv.status === "FAILED_REFUND"
+          ) {
+            badge = `<span class="status-badge failed"><i class="fa fa-times-circle me-1"></i>Gagal</span>`;
+          } else {
+            badge = `<span class="status-badge pending"><i class="fa fa-clock me-1"></i>${inv.status}</span>`;
+          }
+
+          // 4. Status pengiriman akun/email
+          let statusAkun = "";
+          if (akunInfo && (inv.status === "PAID" || inv.status === "SETTLED")) {
+            if (akunInfo.akun_sent === true || akunInfo.akun_sent === "true") {
+              statusAkun = `<span class="status-badge sent"><i class="fa fa-envelope-circle-check me-1"></i> Akun sudah dikirim ke email <b>${akunInfo.email}</b></span>
+              <div class="small mt-1 text-success">Cek folder spam/promosi jika belum masuk.</div>`;
+            } else if (akunInfo.akun_sent === "FAILED") {
+              statusAkun = `<span class="status-badge expired"><i class="fa fa-exclamation-triangle me-1"></i> Gagal kirim email, hubungi admin!</span>`;
+            } else {
+              statusAkun = `<span class="status-badge not-sent"><i class="fa fa-clock me-1"></i> Akun belum dikirim, proses dalam beberapa menit.</span>`;
+            }
+          } else {
+            statusAkun = `<span class="status-badge not-sent"><i class="fa fa-clock me-1"></i> Akun belum dikirim</span>`;
+          }
+
+          hasil.innerHTML = `
+          <div class="mb-2"><b>Status Pembayaran:</b> ${badge}</div>
+          <div class="mb-2"><b>Status Email Akun:</b><br>${statusAkun}</div>
+          <div class="mb-1"><b>Nama:</b> ${inv.customer_name || "-"}</div>
+          <div class="mb-1"><b>Email:</b> ${inv.customer_email || "-"}</div>
+          <div class="mb-1"><b>Metode:</b> ${inv.payment_method || "-"} <small>${inv.payment_name ? "(" + inv.payment_name + ")" : ""}</small></div>
+          <div class="mb-1"><b>Nominal:</b> <span class="fw-bold">Rp ${inv.amount ? inv.amount.toLocaleString() : "-"}</span></div>
+          <div class="mb-1"><b>Waktu Bayar:</b> ${
+            inv.paid_at
+              ? new Date(inv.paid_at * 1000).toLocaleString("id-ID")
+              : "-"
+          }</div>
+          <div class="mt-2">
+            <a href="https://tripay.co.id/checkout/${inv.reference}" class="btn btn-sm btn-outline-info" target="_blank">
+              <i class="fa fa-receipt"></i> Lihat Invoice Tripay
+            </a>
+          </div>
+        `;
+        } catch (err) {
+          hasil.innerHTML = `<div class="alert alert-danger mt-3"><i class="fa fa-times-circle me-1"></i> Gagal cek status pesanan!</div>`;
+        }
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const emailInput = document.getElementById("beliEmail");
+        emailInput.addEventListener("input", function () {
+          if (!this.value) {
+            this.classList.remove("is-invalid");
+            document.getElementById("beliEmailInvalid").style.display = "none";
+            return;
+          }
+          if (!validateEmail(this.value)) {
+            this.classList.add("is-invalid");
+            document.getElementById("beliEmailInvalid").style.display = "block";
+          } else {
+            this.classList.remove("is-invalid");
+            document.getElementById("beliEmailInvalid").style.display = "none";
+          }
+        });
+
+        document.getElementById("beliForm").onsubmit = async function (e) {
+          e.preventDefault();
+          const email = this.email.value.trim();
+          const nama = this.nama.value.trim();
+          const wa = this.wa.value.trim();
+          const produkId = this.produkId.value;
+          const paymentMethod = "QRIS";
+          if (!validateEmail(email)) {
+            this.email.classList.add("is-invalid");
+            document.getElementById("beliEmailInvalid").style.display = "block";
+            return false;
+          } else {
+            this.email.classList.remove("is-invalid");
+            document.getElementById("beliEmailInvalid").style.display = "none";
+          }
+          const produk = productsList.find((p) => p.id == produkId);
+          const amount = produk ? produk.price : 0;
+          if (!produk || !produk.stock || produk.stock.length === 0) {
+            showToast("Stok produk habis, tidak bisa dibeli.");
+            return;
+          }
+          document.getElementById("beliBtnText").style.display = "none";
+          document.getElementById("beliSpinner").classList.remove("d-none");
+          try {
+            const resp = await fetch("/api/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                method: paymentMethod,
+                produk,
+                amount,
+                name: nama,
+                email: email,
+                wa: wa,
+              }),
+            });
+            const data = await resp.json();
+            if (data.pay_url) {
+              window.location.href = data.pay_url;
+            } else if (data.reference) {
+              showToast(
+                "Pembayaran berhasil dibuat! Silakan lanjutkan pembayaran via QRIS."
+              );
+            } else {
+              showToast(
+                "Gagal membuat pembayaran: " +
+                  (data.error || JSON.stringify(data))
+              );
+            }
+          } catch (err) {
+            showToast("Terjadi error koneksi!");
+          }
+          document.getElementById("beliBtnText").style.display = "";
+          document.getElementById("beliSpinner").classList.add("d-none");
+        };
+      });
+    </script>
+  </body>
+</html>
