@@ -6,6 +6,13 @@ const axios = require("axios");
 const crypto = require("crypto");
 const cors = require("cors");
 const { Resend } = require("resend");
+const https = require("https");
+
+
+const ipv4Agent = new https.Agent({
+  family: 4,
+});
+
 
 const app = express();
 app.use(cors());
@@ -281,6 +288,7 @@ app.post("/api/checkout", async (req, res) => {
   try {
     const response = await axios.post(TRIPAY_BASE_URL, payload, {
       headers: { Authorization: `Bearer ${TRIPAY_API_KEY}` },
+       httpsAgent: ipv4Agent,
     });
 
     const data = response.data?.data || {};
@@ -351,6 +359,7 @@ app.get("/api/invoice/detail/:reference", async (req, res) => {
       TRIPAY_DETAIL_URL + "?reference=" + encodeURIComponent(reference);
     const tripayResp = await axios.get(url, {
       headers: { Authorization: `Bearer ${TRIPAY_API_KEY}` },
+      httpsAgent: ipv4Agent,
     });
     res.json({ status: "ok", data: tripayResp.data.data });
   } catch (e) {
