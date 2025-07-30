@@ -13,19 +13,25 @@ function renderLoginForm() {
   document.getElementById("adminRoot").innerHTML = `
     <div class="container py-5">
       <div class="row justify-content-center">
-        <div class="col-md-5">
-          <div class="card p-4">
-            <h3 class="mb-3 text-center" style="color:#21c9a8;font-weight:800;">Admin Login</h3>
+        <div class="col-md-6 col-lg-4">
+          <div class="card p-4 shadow-lg rounded-4">
+            <h3 class="mb-4 text-center" style="color:#21c9a8; font-weight: 800;">Admin Login</h3>
             <form id="adminLoginForm" autocomplete="off">
               <div class="mb-3">
                 <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" required autofocus />
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  <input type="text" name="username" class="form-control rounded-3" required autofocus />
+                </div>
               </div>
               <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required />
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                  <input type="password" name="password" class="form-control rounded-3" required />
+                </div>
               </div>
-              <button class="btn btn-success w-100" type="submit">Login</button>
+              <button class="btn btn-success w-100 py-2" type="submit">Login</button>
             </form>
             <div id="loginError" class="text-danger mt-3 text-center d-none"></div>
           </div>
@@ -33,6 +39,7 @@ function renderLoginForm() {
       </div>
     </div>
   `;
+
   document.getElementById("adminLoginForm").onsubmit = function (e) {
     e.preventDefault();
     const username = this.username.value.trim();
@@ -47,6 +54,7 @@ function renderLoginForm() {
     }
   };
 }
+
 
 // === APP LAYOUT + TAB NAVIGATION ===
 function renderAdminApp(active = "dashboard") {
