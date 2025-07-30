@@ -78,6 +78,58 @@
           margin-bottom: 1.2rem;
         }
       }
+      /* Kustomisasi untuk login form */
+.card {
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.input-group-text {
+  background: #f0f8ff;
+  color: #21c9a8;
+  border-right: none;
+}
+
+.form-control {
+  border-radius: 0.5rem;
+  border: 1px solid #21c9a8;
+}
+
+.form-control:focus {
+  border-color: #16c99a;
+  box-shadow: 0 0 5px rgba(33, 201, 168, 0.5);
+}
+
+button[type="submit"] {
+  font-weight: 700;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #1de9b6;
+  border-color: #1de9b6;
+}
+
+#loginError {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 2rem 1.5rem;
+  }
+  .form-control {
+    font-size: 1rem;
+  }
+}
+
     </style>
   </head>
   <body>
