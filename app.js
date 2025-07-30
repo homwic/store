@@ -557,6 +557,39 @@ app.post("/api/tripay-callback", express.json(), async (req, res) => {
   res.json({ success: true });
 });
 
+app.post('/api/verify-captcha', async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ error: 'Token reCAPTCHA tidak ada' });
+  }
+
+  try {
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY; // Ambil secret key dari .env
+    const response = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify`,
+      null,
+      {
+        params: {
+          secret: secretKey,
+          response: token,
+        },
+      }
+    );
+
+    const { success } = response.data;
+
+    if (success) {
+      res.json({ success: true });
+    } else {
+      res.status(400).json({ error: 'Verifikasi reCAPTCHA gagal' });
+    }
+  } catch (error) {
+    console.error("Error verifikasi reCAPTCHA:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

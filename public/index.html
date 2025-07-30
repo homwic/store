@@ -12,6 +12,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"
     />
+    <script src="https://www.google.com/recaptcha/api.js?render=6LenUpQrAAAAAJshLfn3aSiXiSGRE7Skrxy1hCQp"></script>
     <style>
       body {
         background: linear-gradient(120deg, #f5faf8 0%, #e6fcfa 100%);
@@ -976,6 +977,27 @@
           document.getElementById("beliSpinner").classList.add("d-none");
         };
       });
+      grecaptcha.ready(function () {
+    grecaptcha.execute('6LenUpQrAAAAAJshLfn3aSiXiSGRE7Skrxy1hCQp', { action: 'homepage' }).then(function (token) {
+      // Kirim token ke server untuk verifikasi
+      fetch('/api/verify-captcha', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: token })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log("Verifikasi reCAPTCHA berhasil.");
+        } else {
+          console.error("Verifikasi reCAPTCHA gagal.");
+        }
+      })
+      .catch(error => console.error("Terjadi kesalahan:", error));
+    });
+  });
     </script>
   </body>
 </html>
