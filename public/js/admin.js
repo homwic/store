@@ -9,13 +9,41 @@ function isLoggedIn() {
   return localStorage.getItem(ADMIN_KEY) === "1";
 }
 
+function showToast(msg, type = "success") {
+  let toast = document.getElementById("adminToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "adminToast";
+    toast.style.position = "fixed";
+    toast.style.bottom = "32px";
+    toast.style.right = "32px";
+    toast.style.zIndex = "9999";
+    toast.style.background = type === "success" ? "#e8fcee" : "#ffeaea";
+    toast.style.color = type === "success" ? "#159e7a" : "#e84118";
+    toast.style.borderLeft = `6px solid ${type === "success" ? "#16c99a" : "#e84118"}`;
+    toast.style.fontWeight = "600";
+    toast.style.boxShadow = "0 2px 20px #21c9a81c";
+    toast.style.borderRadius = "10px";
+    toast.style.padding = "1em 1.5em";
+    toast.style.display = "flex";
+    toast.style.alignItems = "center";
+    toast.style.gap = "9px";
+    toast.style.fontSize = "1.05em";
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `<span>${msg}</span>
+    <button onclick="this.parentNode.style.display='none'" style="margin-left:auto;border:none;background:transparent;font-size:1.3em;color:#199978;">&times;</button>`;
+  toast.style.display = "flex";
+  setTimeout(() => { toast.style.display = "none"; }, 3500);
+}
+
 function renderLoginForm() {
   document.getElementById("adminRoot").innerHTML = `
     <div class="container py-5">
       <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
           <div class="card p-4 shadow-lg rounded-4">
-            <h3 class="mb-4 text-center" style="color:#21c9a8; font-weight: 800;">Admin Login</h3>
+            <h3 class="mb-4 text-center">Admin Login</h3>
             <form id="adminLoginForm" autocomplete="off">
               <div class="mb-3">
                 <label class="form-label">Username</label>
@@ -46,11 +74,13 @@ function renderLoginForm() {
     const password = this.password.value.trim();
     if (username === ADMIN_USER && password === ADMIN_PASS) {
       localStorage.setItem(ADMIN_KEY, "1");
-      renderAdminApp("dashboard");
+      showToast("Login berhasil!", "success");
+      setTimeout(() => renderAdminApp("dashboard"), 600);
     } else {
       document.getElementById("loginError").classList.remove("d-none");
       document.getElementById("loginError").textContent =
         "Username atau password salah!";
+      showToast("Username atau password salah!", "error");
     }
   };
 }
@@ -60,7 +90,7 @@ function renderLoginForm() {
 function renderAdminApp(active = "dashboard") {
   document.getElementById("adminRoot").innerHTML = `
     <nav class="navbar navbar-expand-lg navbar-light px-3 mb-4">
-      <a class="navbar-brand fw-bold" href="#" style="color:#21c9a8;font-weight:900;font-size:1.2em;">Admin Panel</a>
+      <a class="navbar-brand fw-bold" href="#">Admin Panel</a>
       <div class="collapse navbar-collapse show">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -78,7 +108,8 @@ function renderAdminApp(active = "dashboard") {
 
   document.getElementById("logoutBtn").onclick = function () {
     localStorage.removeItem(ADMIN_KEY);
-    renderLoginForm();
+    showToast("Logout berhasil!", "success");
+    setTimeout(() => renderLoginForm(), 500);
   };
   document.getElementById("navDashboard").onclick = function (e) {
     e.preventDefault();
@@ -117,7 +148,9 @@ function renderDashboardPage() {
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <tr><td colspan="7" class="text-center text-muted">Memuat data ...</td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -176,7 +209,7 @@ function renderHistoryPage() {
               </tr>
             </thead>
             <tbody>
-              <tr><td colspan="7" class="text-center text-muted">Memuat data ...</td></tr>
+              <tr><td colspan="8" class="text-center text-muted">Memuat data ...</td></tr>
             </tbody>
           </table>
         </div>
@@ -215,13 +248,13 @@ function renderHistoryPage() {
           `;
         });
       } else {
-        html = `<tr><td colspan="7" class="text-center text-muted">Belum ada transaksi</td></tr>`;
+        html = `<tr><td colspan="8" class="text-center text-muted">Belum ada transaksi</td></tr>`;
       }
       document.querySelector("#historyTable tbody").innerHTML = html;
     })
     .catch(() => {
       document.querySelector("#historyTable tbody").innerHTML =
-        `<tr><td colspan="7" class="text-center text-danger">Gagal memuat data</td></tr>`;
+        `<tr><td colspan="8" class="text-center text-danger">Gagal memuat data</td></tr>`;
     });
 }
 
@@ -296,7 +329,10 @@ function loadProducts() {
               body: JSON.stringify({ price: parseInt(newPrice) }),
             })
               .then((res) => res.json())
-              .then(loadProducts);
+              .then(() => {
+                showToast("Harga berhasil diubah!", "success");
+                loadProducts();
+              });
           };
         };
       });
@@ -315,7 +351,7 @@ function loadProducts() {
         };
       });
 
-      // Lihat SNK (PAKAI innerText AGAR FORMAT RAPIH SESUAI INPUT)
+      // Lihat SNK
       document.querySelectorAll(".btn-snk").forEach((btn) => {
         btn.onclick = function () {
           document.getElementById("snkProductName").innerText =
@@ -340,7 +376,10 @@ function deleteProduct(id) {
   if (confirm("Yakin hapus produk?")) {
     fetch(`/api/products/${id}`, { method: "DELETE" })
       .then((res) => res.json())
-      .then(() => loadProducts());
+      .then(() => {
+        showToast("Produk berhasil dihapus!", "success");
+        loadProducts();
+      });
   }
 }
 
@@ -355,7 +394,7 @@ function setupAddProductForm() {
       const file = fileInput.files[0];
 
       if (!file) {
-        alert("Gambar produk wajib diisi!");
+        showToast("Gambar produk wajib diisi!", "error");
         return;
       }
 
@@ -378,6 +417,7 @@ function setupAddProductForm() {
           .then((res) => res.json())
           .then(() => {
             form.reset();
+            showToast("Produk berhasil ditambahkan!", "success");
             loadProducts();
           });
       };
@@ -444,9 +484,8 @@ document
     const pin = this.pin.value.trim();
     const link = this.link.value.trim();
 
-    // Validasi: harus isi link ATAU email+password
     if (!link && (!email || !password)) {
-      alert("Isi Link, atau Email & Password!");
+      showToast("Isi Link, atau Email & Password!", "error");
       return;
     }
 
@@ -459,6 +498,7 @@ document
       .then((res) => res.json())
       .then(() => {
         this.reset();
+        showToast("Stok berhasil ditambah!", "success");
         loadStock();
         loadProducts();
       });
@@ -480,6 +520,7 @@ document.getElementById("editSnkForm").addEventListener("submit", function (e) {
         document.getElementById("editSnkModal")
       );
       modal.hide();
+      showToast("SNK berhasil diubah!", "success");
       loadProducts();
     });
 });
