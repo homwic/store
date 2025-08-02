@@ -178,7 +178,6 @@
         flex: 1 1 210px;
         min-width: 170px;
         margin-bottom: 1.5em;
-        /* Tambahkan agar rata tengah di mobile */
         text-align: left;
       }
       .footer-col .footer-logo {
@@ -253,40 +252,48 @@
         .footer-container {
           flex-direction: column;
           align-items: center;
-          gap: 1.3em;
+          gap: 1.1em;
         }
         .footer-col {
           width: 100%;
           max-width: 330px;
           text-align: center;
-          margin-bottom: 1.7em;
+          margin-bottom: 1.1em;
         }
         .footer-social-list {
           justify-content: center;
         }
       }
       @media (max-width: 600px) {
+        footer {
+          padding: 1.1rem 0 0.6rem 0;
+        }
         .footer-container {
-          padding: 0 6px;
+          padding: 0 3px;
+          gap: 0.7em;
         }
         .footer-col {
           max-width: 100%;
           padding-left: 0;
           padding-right: 0;
-          margin-bottom: 1.3em;
+          margin-bottom: 0.7em;
         }
         .footer-help {
           width: 100%;
-          font-size: 0.97em;
-          padding: 0.8em 0.7em 0.7em 0.7em;
+          font-size: 0.95em;
+          padding: 0.6em 0.5em 0.5em 0.5em;
         }
       }
       @media (max-width: 400px) {
         .footer-col {
-          font-size: 0.97em;
+          font-size: 0.95em;
         }
         .footer-help {
+          font-size: 0.91em;
+        }
+        .footer-mini {
           font-size: 0.93em;
+          margin-top: 1em;
         }
       }
       @media (max-width: 767px) {
