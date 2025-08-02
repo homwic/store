@@ -178,6 +178,8 @@
         flex: 1 1 210px;
         min-width: 170px;
         margin-bottom: 1.5em;
+        /* Tambahkan agar rata tengah di mobile */
+        text-align: left;
       }
       .footer-col .footer-logo {
         width: 44px;
@@ -257,9 +259,34 @@
           width: 100%;
           max-width: 330px;
           text-align: center;
+          margin-bottom: 1.7em;
         }
         .footer-social-list {
           justify-content: center;
+        }
+      }
+      @media (max-width: 600px) {
+        .footer-container {
+          padding: 0 6px;
+        }
+        .footer-col {
+          max-width: 100%;
+          padding-left: 0;
+          padding-right: 0;
+          margin-bottom: 1.3em;
+        }
+        .footer-help {
+          width: 100%;
+          font-size: 0.97em;
+          padding: 0.8em 0.7em 0.7em 0.7em;
+        }
+      }
+      @media (max-width: 400px) {
+        .footer-col {
+          font-size: 0.97em;
+        }
+        .footer-help {
+          font-size: 0.93em;
         }
       }
       @media (max-width: 767px) {
